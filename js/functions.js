@@ -12,7 +12,6 @@ const palindromeCheck = (string) => {
       invertedString += stringRegister.at(i);
     }
   }
-  console.log(invertedString);
   return invertedString === stringRegister;
 };
 palindromeCheck('улыбок тебе дед Макар');
