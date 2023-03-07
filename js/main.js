@@ -62,4 +62,4 @@ const createImage = () => ({
   comments: Array.from({length:getRandomInteger(0,COMMENT_COUNT)},createComment)
 });
 const randomImages = Array.from({length: PHOTO_COUNT}, createImage);
-console.log(randomImages);
+
