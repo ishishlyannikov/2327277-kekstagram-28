@@ -61,5 +61,6 @@ const createImage = () => ({
   likes: getRandomInteger(LIKE_MIN_COUNT,LIKE_MAX_COUNT),
   comments: Array.from({length:getRandomInteger(0,COMMENT_COUNT)},createComment)
 });
+// eslint-disable-next-line no-unused-vars
 const randomImages = Array.from({length: PHOTO_COUNT}, createImage);
 
