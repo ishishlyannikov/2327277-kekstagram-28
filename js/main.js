@@ -1,3 +1,3 @@
-import { randomImages } from './data.js';
+import { createRandomImages } from './data.js';
 
-randomImages();
+createRandomImages();

@@ -1,5 +1,5 @@
 import {getRandomInteger, getRandomArrayElement, createIdGenerator} from './utils.js';
-// задаем вводные данные
+
 const AVATAR_COUNT = 6;
 const PHOTO_COUNT = 25;
 const LIKE_MIN_COUNT = 15;
@@ -44,7 +44,6 @@ const createImage = () => ({
   likes: getRandomInteger(LIKE_MIN_COUNT,LIKE_MAX_COUNT),
   comments: Array.from({length:getRandomInteger(0,COMMENT_COUNT)},createComment)
 });
-// eslint-disable-next-line no-unused-vars
-const randomImages = ()=> Array.from({length: PHOTO_COUNT}, createImage);
 
-export {randomImages};
+export const createRandomImages = ()=> Array.from({length: PHOTO_COUNT}, createImage);
+
