@@ -1,22 +1,24 @@
-import { createRandomImages } from './data.js';
+const template = document.querySelector('#picture').content.querySelector('.picture');
+const container = document.querySelector('.pictures');
 
-const pictureTemplate = document.querySelector('#picture')
-  .content
-  .querySelector('.picture');
+const getPreview = ({url,description,comments,likes}) => {
+  const preview = template.cloneNode(true);
 
-const picturesContainer = document.querySelector('.pictures');
+  preview.querySelector('.picture__img').src = url;
+  preview.querySelector('.picture__info').alt = description;
+  preview.querySelector('.picture__comments').textcontent = comments.length;
+  preview.querySelector('.picture__likes').textcontent = likes;
 
-const similarImages = createRandomImages();
-
-const picturesFragment = document.createDocumentFragment();
-
-export const createPreview = () => {
-  similarImages.forEach(({url,comments,likes}) => {
-    const preview = pictureTemplate.cloneNode(true);
-    preview.querySelector('.picture__img').src = url;
-    preview.querySelector('.picture__comments').textcontent = comments.length;
-    preview.querySelector('.picture__likes').textcontent = likes;
-    picturesFragment.appendChild(preview);
-  });
-  picturesContainer.appendChild(picturesFragment);
+  return preview;
 };
+
+export const renderPreview = (pictures) => {
+  const fragment = document.createDocumentFragment();
+  pictures.forEach((picture) => {
+    const preview = getPreview(picture);
+    fragment.append(preview);
+  });
+  container.append(fragment);
+};
+
+
