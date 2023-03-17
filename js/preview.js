@@ -6,8 +6,8 @@ const getPreview = ({url,description,comments,likes}) => {
 
   preview.querySelector('.picture__img').src = url;
   preview.querySelector('.picture__info').alt = description;
-  preview.querySelector('.picture__comments').textcontent = comments.length;
-  preview.querySelector('.picture__likes').textcontent = likes;
+  preview.querySelector('.picture__comments').textContent = comments.length;
+  preview.querySelector('.picture__likes').textContent = likes;
 
   return preview;
 };
