@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomArrayElement, createIdGenerator} from './utils.js';
+import {getRandomInteger, getRandomArrayElement, createIdGenerator, createRandomIdFromRangeGenerator} from './utils.js';
 
 const AVATAR_COUNT = 6;
 const PHOTO_COUNT = 25;
@@ -28,7 +28,8 @@ const DESCRIPTIONS = [
 const NAMES = ['Aня','Ксюша','Юля','Наташа','Лена','Снежана'];
 
 const generateCommentId = createIdGenerator();
-const generateImageId = createIdGenerator();
+const generateImageId = createRandomIdFromRangeGenerator(1, PHOTO_COUNT);
+const generateUrl = createRandomIdFromRangeGenerator(1, PHOTO_COUNT);
 
 const createComment = () => ({
   id: generateCommentId(),
@@ -39,11 +40,12 @@ const createComment = () => ({
 
 const createImage = () => ({
   id: generateImageId(),
-  url: `photos/${getRandomInteger(1,PHOTO_COUNT)}.jpg`,
+  url: `photos/${generateUrl()}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomInteger(LIKE_MIN_COUNT,LIKE_MAX_COUNT),
   comments: Array.from({length:getRandomInteger(0,COMMENT_COUNT)},createComment)
 });
 
 export const createRandomImages = ()=> Array.from({length: PHOTO_COUNT}, createImage);
+
 
