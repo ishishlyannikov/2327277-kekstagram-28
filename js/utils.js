@@ -29,3 +29,5 @@ export const createRandomIdFromRangeGenerator = (min, max) => {
     return currentValue;
   };
 };
+
+export const isEscapeKey = (evt) => evt.key === 'Escape';

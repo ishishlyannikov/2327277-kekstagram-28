@@ -1,5 +1,4 @@
 import { createRandomImages } from './data.js';
-import { renderPreview } from './preview.js';
-const randomImages = createRandomImages();
+import { renderGallery } from './gallery.js';
 
-renderPreview(randomImages);
+renderGallery(createRandomImages());
