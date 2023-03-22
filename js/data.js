@@ -4,7 +4,7 @@ const AVATAR_COUNT = 6;
 const PHOTO_COUNT = 25;
 const LIKE_MIN_COUNT = 15;
 const LIKE_MAX_COUNT = 200;
-const COMMENT_COUNT = 3;
+const COMMENT_COUNT = 5;
 const MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -37,6 +37,8 @@ const createComment = () => ({
   message: getRandomArrayElement(MESSAGES),
   name: getRandomArrayElement(NAMES)
 });
+
+export const commentsArray = Array.from({ length: COMMENT_COUNT }, createComment);
 
 const createImage = () => ({
   id: generateImageId(),
