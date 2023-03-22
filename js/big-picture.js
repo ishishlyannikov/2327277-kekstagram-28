@@ -31,6 +31,7 @@ const closeBigPicture = () => {
   document.body.classList.remove('modal-open');
   bigPicture.classList.add('hidden');
   cancelButton.removeEventListener('click', closeBigPicture);
+  // eslint-disable-next-line no-use-before-define
   document.removeEventListener('keydown', onEscape);
 };
 
