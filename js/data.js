@@ -4,7 +4,7 @@ const AVATAR_COUNT = 6;
 const PHOTO_COUNT = 25;
 const LIKE_MIN_COUNT = 15;
 const LIKE_MAX_COUNT = 200;
-const COMMENT_COUNT = 5;
+const COMMENT_COUNT = 15;
 const MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
