@@ -18,10 +18,17 @@ const pristine = new Pristine(form, {
   errorTextClass: 'img-upload__field-wrapper_error-text',
 }, false);
 
+const onEscape = (evt) => {
+  if (isEscapeKey (evt)) {
+    evt.preventDefault();
+    // eslint-disable-next-line no-use-before-define
+    hideModal();
+  }
+};
+
 const showModal = () => {
   overlay.classList.remove('hidden');
   body.classList.add('modal-open');
-  // eslint-disable-next-line no-use-before-define
   document.addEventListener('keydown', onEscape);
 };
 
@@ -30,18 +37,9 @@ const hideModal = () => {
   pristine.reset();
   overlay.classList.add('hidden');
   body.classList.remove('modal-open');
-  // eslint-disable-next-line no-use-before-define
   document.removeEventListener('keydown', onEscape);
 };
 
-const onEscape = (evt) => {
-  if (isEscapeKey (evt)) {
-    evt.preventDefault();
-    hideModal();
-  }
-};
-
-// eslint-disable-next-line no-unused-vars
 const initTextField = (field) => {
   field.addEventListener('focus', () => {
     document.removeEventListener('keydown', onEscape);
@@ -49,10 +47,7 @@ const initTextField = (field) => {
   field.addEventListener('blur', () => {
     document.addEventListener('keydown', onEscape);
   });
-  initTextField(commentField);
-  initTextField(hashtagsField);
 };
-
 
 const isUniqueHashtags = (tags) => {
   const lowerCaseTags = tags.map((tag) => tag.toLowerCase());
@@ -61,7 +56,6 @@ const isUniqueHashtags = (tags) => {
 const isValidTag = (tag) => VALID_SYMBOLS.test(tag);
 const isValidCount = (tags) => tags.length <= MAX_HASHTAG_COUNT;
 
-
 const validateTags = (value) => {
   const tags = value
     .trim()
@@ -69,12 +63,6 @@ const validateTags = (value) => {
     .filter((tag) => tag.trim().length);
   return isValidCount(tags) && isUniqueHashtags (tags) && tags.every(isValidTag);
 };
-
-pristine.addValidator(
-  hashtagsField,
-  validateTags,
-  ERROR_TEXT
-);
 
 const onFormSubmit = (evt) => {
   evt.preventDefault();
@@ -85,4 +73,11 @@ export const initModal = () => {
   fileField.addEventListener('change', showModal);
   cancelButton.addEventListener('click', hideModal);
   form.addEventListener('submit', onFormSubmit);
+  initTextField(commentField);
+  initTextField(hashtagsField);
+  pristine.addValidator(
+    hashtagsField,
+    validateTags,
+    ERROR_TEXT
+  );
 };
