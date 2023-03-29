@@ -34,14 +34,6 @@ const hideModal = () => {
   document.removeEventListener('keydown', onEscape);
 };
 
-const onFieldInputChange = () => {
-  showModal();
-};
-
-const onCancelButtonClick = () => {
-  hideModal();
-};
-
 const onEscape = (evt) => {
   if (isEscapeKey (evt)) {
     evt.preventDefault();
@@ -49,26 +41,26 @@ const onEscape = (evt) => {
   }
 };
 
-const onTextFieldKeydown = (field) => {
+// eslint-disable-next-line no-unused-vars
+const initTextField = (field) => {
   field.addEventListener('focus', () => {
     document.removeEventListener('keydown', onEscape);
   });
   field.addEventListener('blur', () => {
     document.addEventListener('keydown', onEscape);
   });
+  initTextField(commentField);
+  initTextField(hashtagsField);
 };
 
-onTextFieldKeydown(commentField);
-onTextFieldKeydown(hashtagsField);
 
 const isUniqueHashtags = (tags) => {
   const lowerCaseTags = tags.map((tag) => tag.toLowerCase());
   return lowerCaseTags.length === new Set(lowerCaseTags).size;
 };
-
 const isValidTag = (tag) => VALID_SYMBOLS.test(tag);
-
 const isValidCount = (tags) => tags.length <= MAX_HASHTAG_COUNT;
+
 
 const validateTags = (value) => {
   const tags = value
@@ -89,7 +81,8 @@ const onFormSubmit = (evt) => {
   pristine.validate();
 };
 
-fileField.addEventListener('change', onFieldInputChange);
-cancelButton.addEventListener('click', onCancelButtonClick);
-form.addEventListener('submit', onFormSubmit);
-
+export const initModal = () => {
+  fileField.addEventListener('change', showModal);
+  cancelButton.addEventListener('click', hideModal);
+  form.addEventListener('submit', onFormSubmit);
+};
