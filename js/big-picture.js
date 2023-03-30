@@ -20,7 +20,7 @@ const renderBigPicture = (photo) => {
   bigPicture.querySelector('.comments-count').textContent = photo.comments.length;
 };
 
-const getComment = (comment) => {
+const getCommentNode = (comment) => {
   const newComment = commentItem.cloneNode(true);
   newComment.querySelector('img').src = comment.avatar;
   newComment.querySelector('img').alt = comment.name;
@@ -39,7 +39,7 @@ const createComments = () => {
   }
   const fragment = document.createDocumentFragment();
   for (let i = 0; i < commentsShown; i++) {
-    const commentElement = getComment(comments[i]);
+    const commentElement = getCommentNode(comments[i]);
     fragment.append(commentElement);
   }
 
