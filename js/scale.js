@@ -9,18 +9,19 @@ const imgPreview = imgPreviewContainer.querySelector('.img-upload__preview').que
 const scaleValue = imgPreviewContainer.querySelector('.scale__control--value');
 
 const scaleChanging = (operation) => {
+  const parsedValue = parseInt(scaleValue.value, DECIMAL_SYSTEM);
   switch (operation) {
     case 'increase':
-      if (parseInt(scaleValue.value, DECIMAL_SYSTEM) < MAX_SCALE) {
-        scaleValue.value = `${parseInt(scaleValue.value, DECIMAL_SYSTEM) + SCALE_STEP}%`;
+      if (parsedValue < MAX_SCALE) {
+        scaleValue.value = `${parsedValue + SCALE_STEP}%`;
       }
       break;
     case 'decrease':
-      if (parseInt(scaleValue.value, DECIMAL_SYSTEM) > MIN_SCALE) {
-        scaleValue.value = `${parseInt(scaleValue.value, DECIMAL_SYSTEM) - SCALE_STEP}%`;
+      if (parsedValue > MIN_SCALE) {
+        scaleValue.value = `${parsedValue - SCALE_STEP}%`;
       }
   }
-  imgPreview.style.transform = `scale(${parseInt(scaleValue.value, DECIMAL_SYSTEM) / DEFAULT_SCALE})`;
+  imgPreview.style.transform = `scale(${parsedValue / DEFAULT_SCALE})`;
 };
 
 export const decreaseImageScale = () => scaleChanging('decrease');
