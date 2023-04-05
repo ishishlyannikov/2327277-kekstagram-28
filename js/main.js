@@ -7,11 +7,10 @@ import { hideModal } from './form.js';
 
 getData()
   .then((requestData) => renderGallery(requestData)
-  ).
-  catch((err) => {
+  )
+  .catch((err) => {
     showAlert(err.message);
   });
-
 
 setOnFormSubmit(hideModal);
 initModal();

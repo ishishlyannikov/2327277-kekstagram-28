@@ -66,7 +66,7 @@ const onMessageEscape = (evt) =>{
 };
 
 const onOutsideElement = (evt) => {
-  const div = document.querySelector('.error__inner, success__inner');
+  const div = document.querySelector('.error__inner, .success__inner');
   if (evt.composedPath().includes(div)) {
     return;
   }
