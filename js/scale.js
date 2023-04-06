@@ -6,23 +6,23 @@ const DECIMAL_SYSTEM = 10;
 
 const imgPreviewContainer = document.querySelector('.img-upload__preview-container');
 const imgPreview = imgPreviewContainer.querySelector('.img-upload__preview').querySelector('img');
-const scaleValue = imgPreviewContainer.querySelector('.scale__control--value');
+const scaleControl = imgPreviewContainer.querySelector('.scale__control--value');
 
-const scaleChanging = (operation) => {
-  const parsedValue = parseInt(scaleValue.value, DECIMAL_SYSTEM);
+const scaleChange = (operation) => {
+  const parsedValue = parseInt(scaleControl.value, DECIMAL_SYSTEM);
   switch (operation) {
     case 'increase':
       if (parsedValue < MAX_SCALE) {
-        scaleValue.value = `${parsedValue + SCALE_STEP}%`;
+        scaleControl.value = `${parsedValue + SCALE_STEP}%`;
       }
       break;
     case 'decrease':
       if (parsedValue > MIN_SCALE) {
-        scaleValue.value = `${parsedValue - SCALE_STEP}%`;
+        scaleControl.value = `${parsedValue - SCALE_STEP}%`;
       }
   }
   imgPreview.style.transform = `scale(${parsedValue / DEFAULT_SCALE})`;
 };
 
-export const decreaseImageScale = () => scaleChanging('decrease');
-export const increaseImageScale = () => scaleChanging('increase');
+export const decreaseImageScale = () => scaleChange('decrease');
+export const increaseImageScale = () => scaleChange('increase');
