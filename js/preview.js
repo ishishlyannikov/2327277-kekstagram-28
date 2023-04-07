@@ -1,4 +1,5 @@
 const template = document.querySelector('#picture').content.querySelector('.picture');
+const container = document.querySelector('.pictures');
 
 const getPreview = (photo) => {
   const preview = template.cloneNode(true);
@@ -11,7 +12,7 @@ const getPreview = (photo) => {
 };
 
 export const renderPreview = (pictures) => {
-  const container = document.querySelector('.pictures');
+  container.querySelectorAll('.picture').forEach((element) => element.remove());
   const fragment = document.createDocumentFragment();
   pictures.forEach((picture) => {
     const preview = getPreview(picture);
