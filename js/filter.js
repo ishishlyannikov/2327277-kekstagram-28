@@ -20,7 +20,7 @@ export const getFilteredPictures = () =>{
   }
 };
 
-const onFilterClick = (cb) =>{
+const initFilterClick = (cb) =>{
   filterElement.addEventListener('click', (evt) =>{
     if(!evt.target.classList.contains('img-filters__button')){
       return;
@@ -40,5 +40,5 @@ const onFilterClick = (cb) =>{
 export const initFilter = (loadedPictures, cb) => {
   filterElement.classList.remove('img-filters--inactive');
   pictures = loadedPictures.slice();
-  onFilterClick(cb);
+  initFilterClick(cb);
 };
