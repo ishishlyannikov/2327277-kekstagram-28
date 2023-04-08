@@ -8,21 +8,27 @@ const imgPreviewContainer = document.querySelector('.img-upload__preview-contain
 const imgPreview = imgPreviewContainer.querySelector('.img-upload__preview').querySelector('img');
 const scaleControl = imgPreviewContainer.querySelector('.scale__control--value');
 
-const scaleChange = (operation) => {
-  const parsedValue = parseInt(scaleControl.value, DECIMAL_SYSTEM);
+const setScaleOnImage = (newValue) => {
+  scaleControl.value = `${newValue}%`;
+  imgPreview.style.transform = `scale(${newValue / DEFAULT_SCALE})`;
+};
+
+const changeScale = (operation) => {
+  let value = parseInt(scaleControl.value, DECIMAL_SYSTEM);
   switch (operation) {
     case 'increase':
-      if (parsedValue < MAX_SCALE) {
-        scaleControl.value = `${parsedValue + SCALE_STEP}%`;
+      if (value < MAX_SCALE) {
+        value += SCALE_STEP;
       }
       break;
     case 'decrease':
-      if (parsedValue > MIN_SCALE) {
-        scaleControl.value = `${parsedValue - SCALE_STEP}%`;
+      if (value > MIN_SCALE) {
+        value -= SCALE_STEP;
       }
   }
-  imgPreview.style.transform = `scale(${parsedValue / DEFAULT_SCALE})`;
+  setScaleOnImage(value);
 };
 
-export const decreaseImageScale = () => scaleChange('decrease');
-export const increaseImageScale = () => scaleChange('increase');
+export const resetScale = () => setScaleOnImage(DEFAULT_SCALE);
+export const decreaseImageScale = () => changeScale('decrease');
+export const increaseImageScale = () => changeScale('increase');

@@ -42,26 +42,25 @@ const createComments = () => {
     const commentElement = getCommentNode(comments[i]);
     fragment.append(commentElement);
   }
-
   commentsList.innerHTML = '';
   commentsList.append(fragment);
   commentsContainer.innerHTML = `${commentsShown} из <span class="comments-count">${comments.length}</span> комментариев`;
 };
+
 const closeBigPicture = () => {
   document.body.classList.remove('modal-open');
   bigPicture.classList.add('hidden');
   cancelButton.removeEventListener('click', closeBigPicture);
-  // eslint-disable-next-line no-use-before-define
   document.removeEventListener('keydown', onEscape);
   commentsShown = 0;
 };
 
-const onEscape = (evt) => {
+function onEscape (evt) {
   if (isEscapeKey (evt)) {
     evt.preventDefault();
     closeBigPicture();
   }
-};
+}
 
 export const showBigPicture = (data) => {
   bigPicture.classList.remove('hidden');
