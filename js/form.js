@@ -94,7 +94,9 @@ const uploadPhoto = () =>{
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
   if (matches) {
     uploadPreview.src = URL.createObjectURL(file);
-    effectsPreview.forEach((effect) => (effect.style.backgroundImage = `url(${uploadPreview.src})`));
+    effectsPreview.forEach((effect) => {
+      effect.style.backgroundImage = `url(${uploadPreview.src}`;
+    });
   }
 };
 
