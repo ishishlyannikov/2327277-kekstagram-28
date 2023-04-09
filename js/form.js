@@ -1,5 +1,5 @@
 import { isEscapeKey } from './utils.js';
-import { increaseImageScale } from './scale.js';
+import { increaseImageScale, resetScale } from './scale.js';
 import { decreaseImageScale } from './scale.js';
 import { resetEffects } from './effects.js';
 import { initSlider } from './effects.js';
@@ -8,6 +8,7 @@ import { sendData } from './api.js';
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 const MAX_HASHTAG_COUNT = 5;
 const ERROR_TEXT = 'неправильно заполнены хештеги';
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const form = document.querySelector('.img-upload__form');
 const overlay = document.querySelector('.img-upload__overlay');
@@ -25,6 +26,10 @@ const successMessageTemplate = document.querySelector('#success').content.queryS
 const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
 const getUploadState = () => document.querySelector('.success') || document.querySelector('.error');
 
+const uploadFile = document.querySelector('.img-upload__input');
+const uploadPreview = document.querySelector('.img-upload__preview img');
+const effectsPreview = document.querySelectorAll('.effects__preview');
+
 const SubmitButtonText = {
   IDLE: 'Опубликовать',
   SENDING: 'Публикую...'
@@ -36,19 +41,9 @@ const pristine = new Pristine(form, {
   errorTextClass: 'img-upload__field-wrapper_error-text',
 }, false);
 
-const onEscape = (evt) => {
-  if (isEscapeKey(evt) && getUploadState() === null) {
-    evt.preventDefault();
-    // eslint-disable-next-line no-use-before-define
-    hideModal();
-  }
-};
-
 const closeMessage = () => {
   getUploadState().remove();
-  // eslint-disable-next-line no-use-before-define
   document.removeEventListener('keydown', onMessageEscape);
-  // eslint-disable-next-line no-use-before-define
   document.removeEventListener('click', onOutsideElement);
 };
 
@@ -58,20 +53,18 @@ const hideMessage = () => {
   }
 };
 
-const onMessageEscape = (evt) =>{
+function onMessageEscape (evt) {
   if(isEscapeKey(evt)){
     evt.preventDefault();
     closeMessage();
   }
-};
+}
 
-const onOutsideElement = (evt) => {
-  const div = document.querySelector('.error__inner, .success__inner');
-  if (evt.composedPath().includes(div)) {
-    return;
+function onOutsideElement (evt) {
+  if(evt.target === getUploadState()) {
+    closeMessage();
   }
-  closeMessage();
-};
+}
 
 const showSuccessMessage = () =>{
   const successFragment = document.createDocumentFragment();
@@ -95,16 +88,30 @@ const showErrorMessage = () => {
   document.addEventListener('click', onOutsideElement);
 };
 
+const uploadPhoto = () =>{
+  const file = uploadFile.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  if (matches) {
+    uploadPreview.src = URL.createObjectURL(file);
+    effectsPreview.forEach((effect) => {
+      effect.style.backgroundImage = `url(${uploadPreview.src}`;
+    });
+  }
+};
+
 const showModal = () => {
   overlay.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onEscape);
   decreaseImgScale.addEventListener('click', decreaseImageScale);
   increaseImgScale.addEventListener('click', increaseImageScale);
+  uploadPhoto();
 };
 
 export const hideModal = () => {
   form.reset();
+  resetScale();
   pristine.reset();
   resetEffects();
   overlay.classList.add('hidden');
@@ -113,6 +120,13 @@ export const hideModal = () => {
   decreaseImgScale.removeEventListener('click', decreaseImageScale);
   increaseImgScale.removeEventListener('click', increaseImageScale);
 };
+
+function onEscape (evt) {
+  if (isEscapeKey(evt) && getUploadState() === null) {
+    evt.preventDefault();
+    hideModal();
+  }
+}
 
 const initTextField = (field) => {
   field.addEventListener('focus', () => {
