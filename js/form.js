@@ -1,6 +1,6 @@
 import { isEscapeKey } from './utils.js';
-import { increaseImageScale, resetScale } from './scale.js';
-import { decreaseImageScale } from './scale.js';
+import { onDecreaseButtonClick, resetScale } from './scale.js';
+import { onIncreaseButtonClick } from './scale.js';
 import { resetEffects } from './effects.js';
 import { initSlider } from './effects.js';
 import { sendData } from './api.js';
@@ -10,45 +10,45 @@ const MAX_HASHTAG_COUNT = 5;
 const ERROR_TEXT = 'неправильно заполнены хештеги';
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
-const form = document.querySelector('.img-upload__form');
-const overlay = document.querySelector('.img-upload__overlay');
-const body = document.querySelector('body');
-const cancelButton = document.querySelector('#upload-cancel');
-const fileField = document.querySelector('#upload-file');
-const hashtagsField = document.querySelector('.text__hashtags');
-const commentField = document.querySelector('.text__description');
-const imgPreviewContainer = document.querySelector('.img-upload__preview-container');
-const increaseImgScale = imgPreviewContainer.querySelector('.scale__control--bigger');
-const decreaseImgScale = imgPreviewContainer.querySelector('.scale__control--smaller');
-const submitButton = form.querySelector('.img-upload__submit');
-
-const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
-const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
-const getUploadState = () => document.querySelector('.success') || document.querySelector('.error');
-
-const uploadFile = document.querySelector('.img-upload__input');
-const uploadPreview = document.querySelector('.img-upload__preview img');
-const effectsPreview = document.querySelectorAll('.effects__preview');
-
 const SubmitButtonText = {
   IDLE: 'Опубликовать',
   SENDING: 'Публикую...'
 };
 
-const pristine = new Pristine(form, {
+const formElement = document.querySelector('.img-upload__form');
+const overlayElement = document.querySelector('.img-upload__overlay');
+const bodyElement = document.querySelector('body');
+const cancelButtonElement = document.querySelector('#upload-cancel');
+const fileFieldElement = document.querySelector('#upload-file');
+const hashtagsFieldElement = document.querySelector('.text__hashtags');
+const commentFieldElement = document.querySelector('.text__description');
+const imgPreviewContainerElement = document.querySelector('.img-upload__preview-container');
+const increaseImgScaleELement = imgPreviewContainerElement.querySelector('.scale__control--bigger');
+const decreaseImgScaleElement = imgPreviewContainerElement.querySelector('.scale__control--smaller');
+const submitButtonElement = formElement.querySelector('.img-upload__submit');
+
+const successMessageElement = document.querySelector('#success').content.querySelector('.success');
+const errorMessageElement = document.querySelector('#error').content.querySelector('.error');
+const getUploadStateElement = () => document.querySelector('.success') || document.querySelector('.error');
+
+const uploadFileElement = document.querySelector('.img-upload__input');
+const uploadPreviewElement = document.querySelector('.img-upload__preview img');
+const effectsPreviewElement = document.querySelectorAll('.effects__preview');
+
+const pristine = new Pristine(formElement, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextClass: 'img-upload__field-wrapper_error-text',
 }, false);
 
 const closeMessage = () => {
-  getUploadState().remove();
+  getUploadStateElement().remove();
   document.removeEventListener('keydown', onMessageEscape);
   document.removeEventListener('click', onOutsideElement);
 };
 
 const hideMessage = () => {
-  if(getUploadState() !== null){
+  if(getUploadStateElement() !== null){
     closeMessage();
   }
 };
@@ -61,14 +61,14 @@ function onMessageEscape (evt) {
 }
 
 function onOutsideElement (evt) {
-  if(evt.target === getUploadState()) {
+  if(evt.target === getUploadStateElement()) {
     closeMessage();
   }
 }
 
 const showSuccessMessage = () =>{
   const successFragment = document.createDocumentFragment();
-  const successElement = successMessageTemplate.cloneNode(true);
+  const successElement = successMessageElement.cloneNode(true);
   successFragment.append(successElement);
   document.body.append(successFragment);
   const successButton = document.querySelector('.success__button');
@@ -79,7 +79,7 @@ const showSuccessMessage = () =>{
 
 const showErrorMessage = () => {
   const errorFragment = document.createDocumentFragment();
-  const errorElement = errorMessageTemplate.cloneNode(true);
+  const errorElement = errorMessageElement.cloneNode(true);
   errorFragment.append(errorElement);
   document.body.append(errorFragment);
   const errorButton = document.querySelector('.error__button');
@@ -89,40 +89,40 @@ const showErrorMessage = () => {
 };
 
 const uploadPhoto = () =>{
-  const file = uploadFile.files[0];
+  const file = uploadFileElement.files[0];
   const fileName = file.name.toLowerCase();
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
   if (matches) {
-    uploadPreview.src = URL.createObjectURL(file);
-    effectsPreview.forEach((effect) => {
-      effect.style.backgroundImage = `url(${uploadPreview.src}`;
+    uploadPreviewElement.src = URL.createObjectURL(file);
+    effectsPreviewElement.forEach((effect) => {
+      effect.style.backgroundImage = `url(${uploadPreviewElement.src}`;
     });
   }
 };
 
 const showModal = () => {
-  overlay.classList.remove('hidden');
-  body.classList.add('modal-open');
-  document.addEventListener('keydown', onEscape);
-  decreaseImgScale.addEventListener('click', decreaseImageScale);
-  increaseImgScale.addEventListener('click', increaseImageScale);
+  overlayElement.classList.remove('hidden');
+  bodyElement.classList.add('modal-open');
+  document.addEventListener('keydown', onEscapeClick);
+  decreaseImgScaleElement.addEventListener('click', onDecreaseButtonClick);
+  increaseImgScaleELement.addEventListener('click', onIncreaseButtonClick);
   uploadPhoto();
 };
 
 export const hideModal = () => {
-  form.reset();
+  formElement.reset();
   resetScale();
   pristine.reset();
   resetEffects();
-  overlay.classList.add('hidden');
-  body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onEscape);
-  decreaseImgScale.removeEventListener('click', decreaseImageScale);
-  increaseImgScale.removeEventListener('click', increaseImageScale);
+  overlayElement.classList.add('hidden');
+  bodyElement.classList.remove('modal-open');
+  document.removeEventListener('keydown', onEscapeClick);
+  decreaseImgScaleElement.removeEventListener('click', onDecreaseButtonClick);
+  increaseImgScaleELement.removeEventListener('click', onIncreaseButtonClick);
 };
 
-function onEscape (evt) {
-  if (isEscapeKey(evt) && getUploadState() === null) {
+function onEscapeClick (evt) {
+  if (isEscapeKey(evt) && getUploadStateElement() === null) {
     evt.preventDefault();
     hideModal();
   }
@@ -130,10 +130,10 @@ function onEscape (evt) {
 
 const initTextField = (field) => {
   field.addEventListener('focus', () => {
-    document.removeEventListener('keydown', onEscape);
+    document.removeEventListener('keydown', onEscapeClick);
   });
   field.addEventListener('blur', () => {
-    document.addEventListener('keydown', onEscape);
+    document.addEventListener('keydown', onEscapeClick);
   });
 };
 
@@ -158,22 +158,23 @@ const onFormSubmit = (evt) => {
 };
 
 const blockSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.textContent = SubmitButtonText.SENDING;
+  submitButtonElement.disabled = true;
+  submitButtonElement.textContent = SubmitButtonText.SENDING;
 };
 
 const unblockSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.textContent = SubmitButtonText.IDLE;
+  submitButtonElement.disabled = false;
+  submitButtonElement.textContent = SubmitButtonText.IDLE;
 };
 
 export const setOnFormSubmit = () => {
-  form.addEventListener('submit', (evt) =>{
+  formElement.addEventListener('submit', (evt) =>{
     evt.preventDefault();
     if(pristine.validate()){
       blockSubmitButton();
       sendData(new FormData(evt.target))
         .then(showSuccessMessage)
+        .then(hideModal)
         .catch(() => {
           showErrorMessage();
         })
@@ -183,14 +184,14 @@ export const setOnFormSubmit = () => {
 };
 
 export const initModal = () => {
-  fileField.addEventListener('change', showModal);
-  cancelButton.addEventListener('click', hideModal);
-  form.addEventListener('submit', onFormSubmit);
-  initTextField(commentField);
-  initTextField(hashtagsField);
+  fileFieldElement.addEventListener('change', showModal);
+  cancelButtonElement.addEventListener('click', hideModal);
+  formElement.addEventListener('submit', onFormSubmit);
+  initTextField(commentFieldElement);
+  initTextField(hashtagsFieldElement);
   initSlider();
   pristine.addValidator(
-    hashtagsField,
+    hashtagsFieldElement,
     validateTags,
     ERROR_TEXT
   );

@@ -1,8 +1,8 @@
-const template = document.querySelector('#picture').content.querySelector('.picture');
-const container = document.querySelector('.pictures');
+const templateElement = document.querySelector('#picture').content.querySelector('.picture');
+const containerElement = document.querySelector('.pictures');
 
 const getPreview = (photo) => {
-  const preview = template.cloneNode(true);
+  const preview = templateElement.cloneNode(true);
   preview.querySelector('.picture__img').src = photo.url;
   preview.querySelector('.picture__info').alt = photo.description;
   preview.querySelector('.picture__comments').textContent = photo.comments.length;
@@ -12,11 +12,11 @@ const getPreview = (photo) => {
 };
 
 export const renderPreview = (pictures) => {
-  container.querySelectorAll('.picture').forEach((element) => element.remove());
+  containerElement.querySelectorAll('.picture').forEach((element) => element.remove());
   const fragment = document.createDocumentFragment();
   pictures.forEach((picture) => {
     const preview = getPreview(picture);
     fragment.append(preview);
   });
-  container.append(fragment);
+  containerElement.append(fragment);
 };
